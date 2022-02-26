@@ -20,12 +20,12 @@ An ecommerce website using symfony 5.4, twig and mysql.
 The application displays a virtual electronic store that contains virtual products at best prices.
 Users can do the following :
 <ul>
-    <li>Create an account and manage it</li>
     <li>Filter products</li>
     <li>Purchase products and pay online with stripe</li>
-    <li>Manage your adress and carrier</li>
-    <li>Manage products with photo</li>
+    <li>Users : manage your account (adress, carriers, orders)</li>
+    <li>Admin : manage products with photo, orders and header best product</li>
     <li>The profile contains all orders a user has made</li>
+    <li>Receive a confirmation by mail</li>
 </ul>
 <h2>Technology</h2>
 <ul>
