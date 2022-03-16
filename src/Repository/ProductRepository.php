@@ -21,7 +21,7 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * requête qui me permet de récupérer le produits en fonction de la requête de l'utilisateur
+     * requête qui me permet de récupérer le produits en fonction de la recherche de l'utilisateur
      * @return Product[]
      */
     public function findWithSeach (Search $search){
@@ -63,7 +63,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Product

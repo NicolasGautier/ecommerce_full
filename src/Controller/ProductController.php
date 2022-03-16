@@ -7,6 +7,7 @@ use App\Entity\Product;
 use App\Form\SearchType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Laminas\Code\Generator\DocBlock\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,15 @@ class ProductController extends AbstractController
     {
 
         $products = $entityManager->getRepository(Product::class)->findAll();
+        $conn = $entityManager->getConnection();
+
+        foreach ($products as $product){
+            $product_id = $product->getId();
+            $query = "SELECT tag.name FROM tag INNER JOIN products_tags ON products_tags.tag_id = tag.id WHERE products_tags.product_id = :product_id;";
+            $stmt = $conn->prepare($query);
+            $resultSet = $stmt->executeQuery(['product_id' => $product_id]);
+            $product->tag_names = $resultSet->fetchFirstColumn();
+        }
 
         $search =new Search();
         $form = $this->createForm(SearchType::class, $search);
@@ -40,6 +50,24 @@ class ProductController extends AbstractController
             'products'=> $products,
             'form' =>$form->createView()
         ]);
+    }
+
+    /**
+     * @Route ("/manytomany")
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function  manyToMany(EntityManagerInterface $entityManager){
+
+        $tag = new \App\Entity\Tag();
+        $tag->setName("SuperTop");
+        $entityManager->persist($tag);
+
+        $product = $entityManager->getRepository(Product::class)->find(5);
+        $product->addTag($tag);
+        $entityManager->flush();
+
+        return new Response(sprintf($tag->getName().' has been added to'));
     }
 
     /**

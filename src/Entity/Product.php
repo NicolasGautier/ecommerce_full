@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,6 +59,19 @@ class Product
      * @ORM\Column(type="boolean")
      */
     private $isBest;
+
+    /**
+     * Many products can have many tags
+     *
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products")
+     * @ORM\JoinTable (name = "products_tags")
+     */
+    private Collection $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -158,4 +173,36 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag): void
+    {
+
+        // Add the tag
+        $tag->addProduct($this);
+
+        //Add the product
+        $this->tags[] = $tag;
+
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+
+
 }
