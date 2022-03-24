@@ -40,6 +40,6 @@ Users can do the following :
 <h2>Run</h2>
 To run this application, you must set your environmental variables. Some of them have been discarded from my repository.
 After clone the project, run migrations, create your user and set his role in phpmyadmin.
-You must have a mailjet and stripe accounts. 
+You must have a mailjet and stripe accounts. Then, set your keys in mail class and StripeController.
 
 
